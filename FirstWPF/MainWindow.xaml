@@ -7,6 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="397*"/>
+            <ColumnDefinition Width="395*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="txtLogin" HorizontalAlignment="Left" Height="23" Margin="76,56,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtPassword1" HorizontalAlignment="Left" Height="23" Margin="76,130,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtPassword2" HorizontalAlignment="Left" Height="23" Margin="76,158,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnAdd" Content="Button" HorizontalAlignment="Left" Margin="154,253,0,0" VerticalAlignment="Top" Width="75" Click="BtnAdd_Click"/>
+        <Button x:Name="btnInfo" Content="Button" HorizontalAlignment="Left" Margin="180,253,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Click="BtnInfo_Click"/>
+        <TextBlock x:Name="tbSmallInfo" HorizontalAlignment="Left" Margin="76,208,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+        <TextBlock x:Name="tbInfo" HorizontalAlignment="Left" Margin="62,66,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Grid.Column="1"/>
+
     </Grid>
 </Window>
