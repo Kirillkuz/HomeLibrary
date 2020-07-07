@@ -34,43 +34,39 @@ namespace FirstWPF
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            //if (txtPassword1.Text == txtPassword2.Text && txtPassword1.Text != "" && txtLogin.Text != "")
+      
+            if (PasBox1.Password == PasBox2.Password && PasBox1.Password != "" && txtLogin.Text != "")
+            {
+                using (db = new LoginInfoContext())
+                {
+                    tbSmallInfo.Text = "Создание начато";
+                    LoginInfo newUser = new LoginInfo(txtLogin.Text, PasBox1.Password);
+                    db.LoginInfos.Add(newUser);
+                    db.SaveChanges();
+                    tbSmallInfo.Text = "Объекты сохранены";
+
+                }
+            }
+            else
+            {
+                tbSmallInfo.Text = "Ошибка в данных";
+            }
+
+            #region Попытка прикрутить удаленную БД
+            //if (PasBox1.Password == PasBox2.Password && PasBox1.Password != "" && txtLogin.Text != "")
             //{
-            //    using (db = new LoginInfoContext())
+            //    using (ApplicationContext db = new ApplicationContext())
             //    {
             //        tbSmallInfo.Text = "Создание начато";
-            //        LoginInfo newUser = new LoginInfo(txtLogin.Text, txtPassword1.Text);
+            //        LoginInfo newUser = new LoginInfo(txtLogin.Text, PasBox1.Password);
+
             //        db.LoginInfos.Add(newUser);
             //        db.SaveChanges();
             //        tbSmallInfo.Text = "Объекты сохранены";
 
             //    }
             //}
-            //else
-            //{
-            //    tbSmallInfo.Text = "Ошибка в данных";
-            //}
-
-            if (txtPassword1.Text == txtPassword2.Text && txtPassword1.Text != "" && txtLogin.Text != "")
-            {
-                using (ApplicationContext db = new ApplicationContext())
-                {
-                    tbSmallInfo.Text = "Создание начато";
-                    LoginInfo newUser = new LoginInfo(txtLogin.Text, txtPassword1.Text);
-
-                    db.LoginInfos.Add(newUser);
-                    db.SaveChanges();
-                    tbSmallInfo.Text = "Объекты сохранены";
-
-                    var loginInfos = db.LoginInfos.ToList();
-                    Console.WriteLine("Список объектов:");
-                    tbInfo.Text = "Id       Login       Password\n";
-                    foreach (LoginInfo l in loginInfos)
-                    {
-                        tbInfo.Text += $"Id:{l.Id}      Login:{l.Login}     Password:{l.Password}\n";
-                    }
-                }
-            }
+            #endregion
         }
 
         private void BtnInfo_Click(object sender, RoutedEventArgs e)

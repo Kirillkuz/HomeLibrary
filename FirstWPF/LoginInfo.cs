@@ -11,16 +11,19 @@ namespace FirstWPF
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
+        public string Role { get; set; }
 
-       public LoginInfo(string login, string password)
+       public LoginInfo(string login, string password, string role = "User")
        {
             Login = login;
             Password = password;
+            Role = role;
        }
         public LoginInfo()
         {
             Login = "None";
             Password = "None";
+            Role = "None";
         }
 
     }
