@@ -13,13 +13,16 @@
         </Grid.ColumnDefinitions>
         <TextBox x:Name="txtLogin" HorizontalAlignment="Left" Height="23" Margin="76,56,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="btnAdd" Content="Добавить" HorizontalAlignment="Left" Margin="154,253,0,0" VerticalAlignment="Top" Width="75" Click="BtnAdd_Click"/>
-        <Button x:Name="btnInfo" Content="Информация" HorizontalAlignment="Left" Margin="10,193,0,0" VerticalAlignment="Top" Width="146" Grid.Column="1" Click="BtnInfo_Click"/>
+        <Button x:Name="btnInfo" Content="Информация" HorizontalAlignment="Left" Margin="239,389,0,0" VerticalAlignment="Top" Width="146" Grid.Column="1" Click="BtnInfo_Click"/>
         <TextBlock x:Name="tbSmallInfo" HorizontalAlignment="Left" Margin="76,208,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
         <TextBlock x:Name="tbInfo" HorizontalAlignment="Left" Margin="49,257,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Grid.Column="1" RenderTransformOrigin="0.245,4.5"/>
         <DataGrid x:Name="dgMain" HorizontalAlignment="Left" Height="100" Margin="35,53,0,0" VerticalAlignment="Top" Width="310" Grid.Column="1"/>
-        <Button x:Name="btnLoadInfo" Content="Обновить информацию" HorizontalAlignment="Left" Margin="49,166,0,0" VerticalAlignment="Top" Width="168" Grid.Column="1" Click="BtnLoadInfo_Click"/>
+        <Button x:Name="btnLoadInfo" Content="Обновить информацию" HorizontalAlignment="Left" Margin="35,158,0,0" VerticalAlignment="Top" Width="310" Grid.Column="1" Click="BtnLoadInfo_Click"/>
         <PasswordBox x:Name="PasBox1" HorizontalAlignment="Left" Margin="76,117,0,0" VerticalAlignment="Top" Width="113"/>
         <PasswordBox x:Name="PasBox2" HorizontalAlignment="Left" Margin="76,151,0,0" VerticalAlignment="Top" Width="113"/>
+        <Button x:Name="btnAddLogin" Content="Добавить" Grid.Column="1" HorizontalAlignment="Left" Margin="35,183,0,0" VerticalAlignment="Top" Width="75" Click="BtnAddLogin_Click"/>
+        <Button x:Name="btnChangeLogin" Content="Изменить" Grid.Column="1" HorizontalAlignment="Left" Margin="150,183,0,0" VerticalAlignment="Top" Width="75" Click="BtnChangeLogin_Click"/>
+        <Button x:Name="btnDeleteLogin" Content="Удалить" Grid.Column="1" HorizontalAlignment="Left" Margin="270,183,0,0" VerticalAlignment="Top" Width="75" Click="BtnDeleteLogin_Click"/>
 
     </Grid>
 </Window>

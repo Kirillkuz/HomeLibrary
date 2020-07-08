@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.Entity;
+using System.Data;
 
 namespace FirstWPF
 {
@@ -27,8 +28,8 @@ namespace FirstWPF
             InitializeComponent();
 
             db = new LoginInfoContext();
-            db.LoginInfos.Load();
-            dgMain.ItemsSource=db.LoginInfos.Local.ToBindingList();
+            
+            LoadLoginInfo();
             
         }
 
@@ -87,19 +88,94 @@ namespace FirstWPF
         {
             using (db = new LoginInfoContext())
             {
-                var loginInfos = db.LoginInfos;
-                Console.WriteLine("Список объектов:");
-                tbInfo.Text = "Id       Login       Password\n";
-                foreach (LoginInfo l in loginInfos)
-                {
-                    tbInfo.Text += $"Id:{l.Id}      Login:{l.Login}     Password:{l.Password}\n";
-                }
+                LoadLoginInfo();
             }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void LoadLoginInfo()
+        {
+            db.LoginInfos.Load();
+            dgMain.ItemsSource = db.LoginInfos.Local.ToBindingList();
+        }
+
+        private void BtnAddLogin_Click(object sender, RoutedEventArgs e)
+        {
+            UserChangeWindow loginForm = new UserChangeWindow();
+            loginForm.ShowDialog();
+            if (loginForm.DialogResult==false)
+                return;
+
+            LoginInfo login = new LoginInfo();
+            login.Login = loginForm.txtLogin.Text;
+            login.Password = loginForm.txtPassword.Text;
+            login.Role = loginForm.txtRole.Text;
+
+            db.LoginInfos.Add(login);
+            db.SaveChanges();
+
+            MessageBox.Show("Новый объект добавлен");
+        }
+
+        private void BtnChangeLogin_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgMain.SelectedIndex > -1)
+            {
+                int index = dgMain.SelectedIndex;
+                int id = 0;
+                var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
+                DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
+                TextBlock textBlock =(TextBlock)firstSelectedCell.Content;
+                bool converted = Int32.TryParse(textBlock.Text, out id);
+                if (converted == false)
+                    return;
+
+                LoginInfo login = db.LoginInfos.Find(id);
+
+                UserChangeWindow loginForm = new UserChangeWindow();
+
+                loginForm.txtLogin.Text = login.Login;
+                loginForm.txtPassword.Text = login.Password;
+                loginForm.txtRole.Text = login.Role;
+
+                loginForm.ShowDialog();
+                if (loginForm.DialogResult == false)
+                    return;
+
+                login.Login = loginForm.txtLogin.Text;
+                login.Password = loginForm.txtPassword.Text;
+                login.Role = loginForm.txtRole.Text;
+
+                db.SaveChanges();
+                //dataGridView1.Refresh(); // обновляем грид
+                MessageBox.Show("Объект обновлен");
+
+            }
+        }
+
+        private void BtnDeleteLogin_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgMain.SelectedIndex > -1)
+            {
+                int index = dgMain.SelectedIndex;
+                int id = 0;
+                var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
+                DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
+                TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
+                bool converted = Int32.TryParse(textBlock.Text, out id);
+                if (converted == false)
+                    return;
+
+                LoginInfo login = db.LoginInfos.Find(id);
+                db.LoginInfos.Remove(login);
+                db.SaveChanges();
+
+                MessageBox.Show("Объект удален");
+            }
         }
     }
 }
