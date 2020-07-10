@@ -159,6 +159,11 @@
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="LoginInfo.cs" />
     <Compile Include="LoginInfoContext.cs" />
+    <Compile Include="Migrations\202007102050511_AddRoleMigration.cs" />
+    <Compile Include="Migrations\202007102050511_AddRoleMigration.designer.cs">
+      <DependentUpon>202007102050511_AddRoleMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs" />
     <Compile Include="UserChangeWindow.xaml.cs">
       <DependentUpon>UserChangeWindow.xaml</DependentUpon>
     </Compile>
@@ -207,6 +212,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007071733456_first_migration.resx">
       <DependentUpon>202007071733456_first_migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007102050511_AddRoleMigration.resx">
+      <DependentUpon>202007102050511_AddRoleMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

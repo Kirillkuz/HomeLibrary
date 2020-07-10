@@ -113,7 +113,7 @@ namespace FirstWPF
             LoginInfo login = new LoginInfo();
             login.Login = loginForm.txtLogin.Text;
             login.Password = loginForm.txtPassword.Text;
-            login.Role = loginForm.txtRole.Text;
+           // login.Role = loginForm.txtRole.Text;
 
             db.LoginInfos.Add(login);
             db.SaveChanges();
@@ -140,7 +140,7 @@ namespace FirstWPF
 
                 loginForm.txtLogin.Text = login.Login;
                 loginForm.txtPassword.Text = login.Password;
-                loginForm.txtRole.Text = login.Role;
+               // loginForm.txtRole.Text = login.Role;
 
                 loginForm.ShowDialog();
                 if (loginForm.DialogResult == false)
@@ -148,7 +148,7 @@ namespace FirstWPF
 
                 login.Login = loginForm.txtLogin.Text;
                 login.Password = loginForm.txtPassword.Text;
-                login.Role = loginForm.txtRole.Text;
+              //  login.Role = loginForm.txtRole.Text;
 
                 db.SaveChanges();
                 //dataGridView1.Refresh(); // обновляем грид
