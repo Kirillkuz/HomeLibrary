@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.Entity;
 
 namespace FirstWPF
 {
@@ -19,9 +20,11 @@ namespace FirstWPF
     /// </summary>
     public partial class UserChangeWindow : Window
     {
+        LibraryContext db;
         public UserChangeWindow()
         {
             InitializeComponent();
+            db = new LibraryContext();
         }
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
@@ -33,5 +36,31 @@ namespace FirstWPF
         {
             this.DialogResult = true;
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            using (db = new LibraryContext())
+            {
+                db.Roles.Load();
+                cmbRole.ItemsSource = db.Roles.Local;
+                //cmbRole.SelectedValuePath = cmbRole.ItemsSource["Id"];
+
+
+                //foreach (Role role in db.Roles.Local )
+                //{
+                //    cmbRole.SelectedValuePath = role.Id.ToString();
+                //    cmbRole.DisplayMemberPath = role.RoleName;
+
+                //    cmbRole.Items.Add(new { role.RoleName, role.Id});
+                //}
+                //cmbRole.ItemsSource= db.Roles.Local;
+                //cmbRole.DisplayMemberPath = db.Roles.Find
+         
+            }
+            
+            
+    
+        }
+
     }
 }

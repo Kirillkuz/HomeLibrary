@@ -5,7 +5,7 @@
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<FirstWPF.LoginInfoContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<FirstWPF.LibraryContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@
             ContextKey = "FirstWPF.LoginInfoContext";
         }
 
-        protected override void Seed(FirstWPF.LoginInfoContext context)
+        protected override void Seed(FirstWPF.LibraryContext context)
         {
             //  This method will be called after migrating to the latest version.
 

@@ -7,12 +7,14 @@ using System.Data.Entity;
 
 namespace FirstWPF
 {
-    class LoginInfoContext : DbContext
+    class LibraryContext : DbContext
     {
-        public LoginInfoContext()
+        public LibraryContext()
             : base("DbConnection")
         { }
 
         public DbSet<LoginInfo> LoginInfos { get; set; }
+        public DbSet<Role> Roles { get; set; }
+
     }
 }

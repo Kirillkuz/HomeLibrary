@@ -22,12 +22,12 @@ namespace FirstWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        LoginInfoContext db;
+        LibraryContext db;
         public MainWindow()
         {
             InitializeComponent();
 
-            db = new LoginInfoContext();
+            db = new LibraryContext();
             
             LoadLoginInfo();
             
@@ -38,7 +38,7 @@ namespace FirstWPF
       
             if (PasBox1.Password == PasBox2.Password && PasBox1.Password != "" && txtLogin.Text != "")
             {
-                using (db = new LoginInfoContext())
+                using (db = new LibraryContext())
                 {
                     tbSmallInfo.Text = "Создание начато";
                     LoginInfo newUser = new LoginInfo(txtLogin.Text, PasBox1.Password);
@@ -72,7 +72,7 @@ namespace FirstWPF
 
         private void BtnInfo_Click(object sender, RoutedEventArgs e)
         {
-            using (db = new LoginInfoContext())
+            using (db = new LibraryContext())
             {
                 var loginInfos = db.LoginInfos;
                 Console.WriteLine("Список объектов:");
@@ -86,7 +86,7 @@ namespace FirstWPF
 
         private void BtnLoadInfo_Click(object sender, RoutedEventArgs e)
         {
-            using (db = new LoginInfoContext())
+            using (db = new LibraryContext())
             {
                 LoadLoginInfo();
             }
@@ -113,7 +113,7 @@ namespace FirstWPF
             LoginInfo login = new LoginInfo();
             login.Login = loginForm.txtLogin.Text;
             login.Password = loginForm.txtPassword.Text;
-           // login.Role = loginForm.txtRole.Text;
+            login.Role = (Role)loginForm.cmbRole.SelectedItem;
 
             db.LoginInfos.Add(login);
             db.SaveChanges();
@@ -140,7 +140,7 @@ namespace FirstWPF
 
                 loginForm.txtLogin.Text = login.Login;
                 loginForm.txtPassword.Text = login.Password;
-               // loginForm.txtRole.Text = login.Role;
+                loginForm.cmbRole.SelectedItem = login.Role;
 
                 loginForm.ShowDialog();
                 if (loginForm.DialogResult == false)
@@ -148,7 +148,7 @@ namespace FirstWPF
 
                 login.Login = loginForm.txtLogin.Text;
                 login.Password = loginForm.txtPassword.Text;
-              //  login.Role = loginForm.txtRole.Text;
+                login.Role = (Role)loginForm.cmbRole.SelectedItem;
 
                 db.SaveChanges();
                 //dataGridView1.Refresh(); // обновляем грид

@@ -158,7 +158,7 @@
     </ApplicationDefinition>
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="LoginInfo.cs" />
-    <Compile Include="LoginInfoContext.cs" />
+    <Compile Include="LibraryContext.cs" />
     <Compile Include="Migrations\202007102050511_AddRoleMigration.cs" />
     <Compile Include="Migrations\202007102050511_AddRoleMigration.designer.cs">
       <DependentUpon>202007102050511_AddRoleMigration.cs</DependentUpon>
