@@ -41,8 +41,8 @@ namespace FirstWPF
         {
             using (db = new LibraryContext())
             {
-                db.Roles.Load();
-                cmbRole.ItemsSource = db.Roles.Local;
+                //db.Roles.Load();
+                //cmbRole.ItemsSource = db.Roles.Local;
                 //cmbRole.SelectedValuePath = cmbRole.ItemsSource["Id"];
 
 

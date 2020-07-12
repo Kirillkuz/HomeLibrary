@@ -106,6 +106,8 @@ namespace FirstWPF
         private void BtnAddLogin_Click(object sender, RoutedEventArgs e)
         {
             UserChangeWindow loginForm = new UserChangeWindow();
+            db.Roles.Load();
+            loginForm.cmbRole.ItemsSource = db.Roles.Local;
             loginForm.ShowDialog();
             if (loginForm.DialogResult==false)
                 return;
@@ -135,12 +137,20 @@ namespace FirstWPF
                     return;
 
                 LoginInfo login = db.LoginInfos.Find(id);
+                
 
                 UserChangeWindow loginForm = new UserChangeWindow();
-
+                db.Roles.Load();
+                loginForm.cmbRole.ItemsSource = db.Roles.Local;
                 loginForm.txtLogin.Text = login.Login;
                 loginForm.txtPassword.Text = login.Password;
-                loginForm.cmbRole.SelectedItem = login.Role;
+                //loginForm.cmbRole.SelectedItem =loginForm.cmbRole.Items  login.Role;
+
+                foreach (object role in loginForm.cmbRole.Items)
+                {
+                    if (role.Equals((object)login.Role))
+                        loginForm.cmbRole.SelectedItem = role;
+                }
 
                 loginForm.ShowDialog();
                 if (loginForm.DialogResult == false)
@@ -148,7 +158,7 @@ namespace FirstWPF
 
                 login.Login = loginForm.txtLogin.Text;
                 login.Password = loginForm.txtPassword.Text;
-                login.Role = (Role)loginForm.cmbRole.SelectedItem;
+                login.Role = db.Roles.Find(loginForm.cmbRole.SelectedValue);
 
                 db.SaveChanges();
                 //dataGridView1.Refresh(); // обновляем грид
