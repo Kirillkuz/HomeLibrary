@@ -33,42 +33,7 @@ namespace FirstWPF
             
         }
 
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
-      
-            if (PasBox1.Password == PasBox2.Password && PasBox1.Password != "" && txtLogin.Text != "")
-            {
-                using (db = new LibraryContext())
-                {
-                    tbSmallInfo.Text = "Создание начато";
-                    LoginInfo newUser = new LoginInfo(txtLogin.Text, PasBox1.Password);
-                    db.LoginInfos.Add(newUser);
-                    db.SaveChanges();
-                    tbSmallInfo.Text = "Объекты сохранены";
 
-                }
-            }
-            else
-            {
-                tbSmallInfo.Text = "Ошибка в данных";
-            }
-
-            #region Попытка прикрутить удаленную БД
-            //if (PasBox1.Password == PasBox2.Password && PasBox1.Password != "" && txtLogin.Text != "")
-            //{
-            //    using (ApplicationContext db = new ApplicationContext())
-            //    {
-            //        tbSmallInfo.Text = "Создание начато";
-            //        LoginInfo newUser = new LoginInfo(txtLogin.Text, PasBox1.Password);
-
-            //        db.LoginInfos.Add(newUser);
-            //        db.SaveChanges();
-            //        tbSmallInfo.Text = "Объекты сохранены";
-
-            //    }
-            //}
-            #endregion
-        }
 
         private void BtnInfo_Click(object sender, RoutedEventArgs e)
         {
@@ -186,6 +151,66 @@ namespace FirstWPF
 
                 MessageBox.Show("Объект удален");
             }
+        }
+
+        private void DgMain_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            int index = dgMain.SelectedIndex;
+            int id = 0;
+            var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
+            DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
+            TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
+            bool converted = Int32.TryParse(textBlock.Text, out id);
+            if (converted == false)
+                return;
+                        
+            UserProfile userProfile = db.UserProfiles.Find(id);
+            LoginInfo loginInfo = db.LoginInfos.Find(id);
+            btnSaveProfileInfo.Tag = id;
+            if (userProfile==null)
+            {                
+                tbSmallInfo.Text = "Пользователь с логином: "+loginInfo.Login+" не имеет анкеты";
+                btnSaveProfileInfo.Content = "Добавить";
+                txtName.Text = "";
+                txtAge.Text = "";
+
+            }
+            else
+            {
+                tbSmallInfo.Text = "Анкета пользователя с логином: " + loginInfo.Login;
+                txtName.Text = userProfile.Name;
+                txtAge.Text = userProfile.Age.ToString();
+                btnSaveProfileInfo.Content = "Сохранить";
+            }
+        }
+
+        private void BtnSaveProfileInfo_Click(object sender, RoutedEventArgs e)
+        {
+            UserProfile profile;
+            if (btnSaveProfileInfo.Content.ToString() == "Добавить")
+            {
+                profile = new UserProfile { Id = Convert.ToInt32(btnSaveProfileInfo.Tag), Age = Convert.ToInt32(txtAge.Text), Name = txtName.Text };
+                db.UserProfiles.Add(profile);
+                db.SaveChanges();
+            }
+            else
+            {
+                profile = db.UserProfiles.FirstOrDefault(p => p.LoginInfo.Id == Convert.ToInt32(btnSaveProfileInfo.Tag));
+                
+                if (profile != null)
+                {
+                    profile.Name = txtName.Text;
+                    profile.Age = Convert.ToInt32(txtAge.Text);
+                    db.Entry(profile).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            
+        }
+
+        private void BtnDeleteProfileInfo_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

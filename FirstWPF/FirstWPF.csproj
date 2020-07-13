@@ -163,10 +163,15 @@
     <Compile Include="Migrations\202007102050511_AddRoleMigration.designer.cs">
       <DependentUpon>202007102050511_AddRoleMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007132035140_AddRelation_One-to-One.cs" />
+    <Compile Include="Migrations\202007132035140_AddRelation_One-to-One.designer.cs">
+      <DependentUpon>202007132035140_AddRelation_One-to-One.cs</DependentUpon>
+    </Compile>
     <Compile Include="Role.cs" />
     <Compile Include="UserChangeWindow.xaml.cs">
       <DependentUpon>UserChangeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserProfile.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -215,6 +220,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007102050511_AddRoleMigration.resx">
       <DependentUpon>202007102050511_AddRoleMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007132035140_AddRelation_One-to-One.resx">
+      <DependentUpon>202007132035140_AddRelation_One-to-One.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
