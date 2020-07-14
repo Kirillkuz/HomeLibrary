@@ -145,6 +145,10 @@ namespace FirstWPF
                 if (converted == false)
                     return;
 
+                UserProfile userProfile = db.UserProfiles.Find(id);
+                db.UserProfiles.Remove(userProfile);
+                db.SaveChanges();
+
                 LoginInfo login = db.LoginInfos.Find(id);
                 db.LoginInfos.Remove(login);
                 db.SaveChanges();
@@ -210,7 +214,18 @@ namespace FirstWPF
 
         private void BtnDeleteProfileInfo_Click(object sender, RoutedEventArgs e)
         {
+            int index = dgMain.SelectedIndex;
+            int id = 0;
+            var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
+            DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
+            TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
+            bool converted = Int32.TryParse(textBlock.Text, out id);
+            if (converted == false)
+                return;
 
+            UserProfile userProfile = db.UserProfiles.Find(id);
+            db.UserProfiles.Remove(userProfile);
+            db.SaveChanges();
         }
     }
 }
