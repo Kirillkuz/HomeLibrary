@@ -157,6 +157,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationContext.cs" />
+    <Compile Include="Book.cs" />
     <Compile Include="LoginInfo.cs" />
     <Compile Include="LibraryContext.cs" />
     <Compile Include="Migrations\202007102050511_AddRoleMigration.cs" />
@@ -166,6 +167,10 @@
     <Compile Include="Migrations\202007132035140_AddRelation_One-to-One.cs" />
     <Compile Include="Migrations\202007132035140_AddRelation_One-to-One.designer.cs">
       <DependentUpon>202007132035140_AddRelation_One-to-One.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007181941353_Add relation Many-to-Many.cs" />
+    <Compile Include="Migrations\202007181941353_Add relation Many-to-Many.designer.cs">
+      <DependentUpon>202007181941353_Add relation Many-to-Many.cs</DependentUpon>
     </Compile>
     <Compile Include="Role.cs" />
     <Compile Include="UserChangeWindow.xaml.cs">
@@ -223,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007132035140_AddRelation_One-to-One.resx">
       <DependentUpon>202007132035140_AddRelation_One-to-One.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007181941353_Add relation Many-to-Many.resx">
+      <DependentUpon>202007181941353_Add relation Many-to-Many.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

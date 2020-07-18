@@ -64,27 +64,32 @@ namespace FirstWPF
 
         private void LoadLoginInfo()
         {
-            db.LoginInfos.Load();
-            dgMain.ItemsSource = db.LoginInfos.Local.ToBindingList();
+            using (db = new LibraryContext())
+            {
+                db.LoginInfos.Load();
+                dgMain.ItemsSource = db.LoginInfos.Local.ToBindingList();
+            }
         }
 
         private void BtnAddLogin_Click(object sender, RoutedEventArgs e)
         {
-            UserChangeWindow loginForm = new UserChangeWindow();
-            db.Roles.Load();
-            loginForm.cmbRole.ItemsSource = db.Roles.Local;
-            loginForm.ShowDialog();
-            if (loginForm.DialogResult==false)
-                return;
+            using (db = new LibraryContext())
+            {
+                UserChangeWindow loginForm = new UserChangeWindow();
+                db.Roles.Load();
+                loginForm.cmbRole.ItemsSource = db.Roles.Local;
+                loginForm.ShowDialog();
+                if (loginForm.DialogResult == false)
+                    return;
 
-            LoginInfo login = new LoginInfo();
-            login.Login = loginForm.txtLogin.Text;
-            login.Password = loginForm.txtPassword.Text;
-            login.Role = (Role)loginForm.cmbRole.SelectedItem;
+                LoginInfo login = new LoginInfo();
+                login.Login = loginForm.txtLogin.Text;
+                login.Password = loginForm.txtPassword.Text;
+                login.Role = (Role)loginForm.cmbRole.SelectedItem;
 
-            db.LoginInfos.Add(login);
-            db.SaveChanges();
-
+                db.LoginInfos.Add(login);
+                db.SaveChanges();
+            }
             MessageBox.Show("Новый объект добавлен");
         }
 
@@ -96,13 +101,14 @@ namespace FirstWPF
                 int id = 0;
                 var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
                 DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
-                TextBlock textBlock =(TextBlock)firstSelectedCell.Content;
+                TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
                 bool converted = Int32.TryParse(textBlock.Text, out id);
                 if (converted == false)
                     return;
+                using (db = new LibraryContext())
+                {
+                    LoginInfo login = db.LoginInfos.Find(id);
 
-                LoginInfo login = db.LoginInfos.Find(id);
-                
 
                 UserChangeWindow loginForm = new UserChangeWindow();
                 db.Roles.Load();
@@ -128,7 +134,7 @@ namespace FirstWPF
                 db.SaveChanges();
                 //dataGridView1.Refresh(); // обновляем грид
                 MessageBox.Show("Объект обновлен");
-
+            }
             }
         }
 
@@ -161,52 +167,71 @@ namespace FirstWPF
         {
             int index = dgMain.SelectedIndex;
             int id = 0;
-            var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
-            DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
-            TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
-            bool converted = Int32.TryParse(textBlock.Text, out id);
-            if (converted == false)
-                return;
-                        
-            UserProfile userProfile = db.UserProfiles.Find(id);
-            LoginInfo loginInfo = db.LoginInfos.Find(id);
-            btnSaveProfileInfo.Tag = id;
-            if (userProfile==null)
-            {                
-                tbSmallInfo.Text = "Пользователь с логином: "+loginInfo.Login+" не имеет анкеты";
-                btnSaveProfileInfo.Content = "Добавить";
-                txtName.Text = "";
-                txtAge.Text = "";
+            if (this.dgMain.SelectedItem != null)
+            {
+                var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
 
+
+                btnSaveProfileInfo.IsEnabled = true;
+                DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
+                TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
+                bool converted = Int32.TryParse(textBlock.Text, out id);
+                if (converted == false)
+                    return;
+
+                using (db = new LibraryContext())
+                {
+                    UserProfile userProfile = db.UserProfiles.Find(id);
+                    LoginInfo loginInfo = db.LoginInfos.Find(id);
+                    btnSaveProfileInfo.Tag = id;
+                    if (userProfile == null)
+                    {
+                        tbSmallInfo.Text = "Пользователь с логином: " + loginInfo.Login + " не имеет анкеты";
+                        btnSaveProfileInfo.Content = "Добавить";
+                        txtName.Text = "";
+                        txtAge.Text = "";
+
+                    }
+                    else
+                    {
+                        tbSmallInfo.Text = "Анкета пользователя с логином: " + loginInfo.Login;
+                        txtName.Text = userProfile.Name;
+                        txtAge.Text = userProfile.Age.ToString();
+                        btnSaveProfileInfo.Content = "Сохранить";
+                    }
+                }
             }
             else
             {
-                tbSmallInfo.Text = "Анкета пользователя с логином: " + loginInfo.Login;
-                txtName.Text = userProfile.Name;
-                txtAge.Text = userProfile.Age.ToString();
-                btnSaveProfileInfo.Content = "Сохранить";
+                tbSmallInfo.Text = "";
+                txtName.Text = "";
+                txtAge.Text = "";
+                btnSaveProfileInfo.IsEnabled = false;
             }
         }
 
         private void BtnSaveProfileInfo_Click(object sender, RoutedEventArgs e)
         {
-            UserProfile profile;
-            if (btnSaveProfileInfo.Content.ToString() == "Добавить")
+            using (db = new LibraryContext())
             {
-                profile = new UserProfile { Id = Convert.ToInt32(btnSaveProfileInfo.Tag), Age = Convert.ToInt32(txtAge.Text), Name = txtName.Text };
-                db.UserProfiles.Add(profile);
-                db.SaveChanges();
-            }
-            else
-            {
-                profile = db.UserProfiles.FirstOrDefault(p => p.LoginInfo.Id == Convert.ToInt32(btnSaveProfileInfo.Tag));
-                
-                if (profile != null)
+                UserProfile profile;
+                if (btnSaveProfileInfo.Content.ToString() == "Добавить")
                 {
-                    profile.Name = txtName.Text;
-                    profile.Age = Convert.ToInt32(txtAge.Text);
-                    db.Entry(profile).State = EntityState.Modified;
+                    profile = new UserProfile { Id = Convert.ToInt32(btnSaveProfileInfo.Tag), Age = Convert.ToInt32(txtAge.Text), Name = txtName.Text };
+                    db.UserProfiles.Add(profile);
                     db.SaveChanges();
+                }
+                else
+                {
+                    profile = db.UserProfiles.FirstOrDefault(p => p.LoginInfo.Id == Convert.ToInt32(btnSaveProfileInfo.Tag));
+
+                    if (profile != null)
+                    {
+                        profile.Name = txtName.Text;
+                        profile.Age = Convert.ToInt32(txtAge.Text);
+                        db.Entry(profile).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
                 }
             }
             
@@ -214,18 +239,34 @@ namespace FirstWPF
 
         private void BtnDeleteProfileInfo_Click(object sender, RoutedEventArgs e)
         {
-            int index = dgMain.SelectedIndex;
-            int id = 0;
-            var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
-            DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
-            TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
-            bool converted = Int32.TryParse(textBlock.Text, out id);
-            if (converted == false)
-                return;
+            using (db = new LibraryContext())
+            {
+                int index = dgMain.SelectedIndex;
+                int id = 0;
+                var firstSelectedCellContent = dgMain.Columns[0].GetCellContent(this.dgMain.SelectedItem);
+                DataGridCell firstSelectedCell = firstSelectedCellContent != null ? firstSelectedCellContent.Parent as DataGridCell : null;
+                TextBlock textBlock = (TextBlock)firstSelectedCell.Content;
+                bool converted = Int32.TryParse(textBlock.Text, out id);
+                if (converted == false)
+                    return;
 
-            UserProfile userProfile = db.UserProfiles.Find(id);
-            db.UserProfiles.Remove(userProfile);
-            db.SaveChanges();
+                UserProfile userProfile = db.UserProfiles.Find(id);
+                db.UserProfiles.Remove(userProfile);
+                db.SaveChanges();
+            }
+        }
+
+        private void BtnAddBook_Click(object sender, RoutedEventArgs e)
+        {
+            using (db = new LibraryContext())
+            {
+                
+                Book book = new Book();
+                book.Author = txtAuthor.Text;
+                book.Name = txtBookName.Text;
+                db.books.Add(book);
+                db.SaveChanges();
+            }
         }
     }
 }

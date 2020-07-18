@@ -18,5 +18,11 @@ namespace FirstWPF
         public int Age { get; set; }
 
         public LoginInfo LoginInfo { get; set; }
+
+        public virtual ICollection<Book> Books { get; set; }
+        public UserProfile()
+        {
+            Books = new List<Book>();
+        }
     }
 }

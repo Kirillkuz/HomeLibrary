@@ -16,6 +16,7 @@ namespace FirstWPF
         public DbSet<LoginInfo> LoginInfos { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Book> books { get; set; }
 
     }
 }
