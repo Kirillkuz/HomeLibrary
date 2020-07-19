@@ -23,6 +23,7 @@ namespace FirstWPF
     public partial class MainWindow : Window
     {
         LibraryContext db;
+        UserProfile userProfile;
         public MainWindow()
         {
             InitializeComponent();
@@ -59,7 +60,7 @@ namespace FirstWPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            UpdateBook();
         }
 
         private void LoadLoginInfo()
@@ -181,7 +182,8 @@ namespace FirstWPF
 
                 using (db = new LibraryContext())
                 {
-                    UserProfile userProfile = db.UserProfiles.Find(id);
+                    lbLibrary.Items.Clear();
+                    userProfile = db.UserProfiles.Find(id);
                     LoginInfo loginInfo = db.LoginInfos.Find(id);
                     btnSaveProfileInfo.Tag = id;
                     if (userProfile == null)
@@ -197,7 +199,11 @@ namespace FirstWPF
                         tbSmallInfo.Text = "Анкета пользователя с логином: " + loginInfo.Login;
                         txtName.Text = userProfile.Name;
                         txtAge.Text = userProfile.Age.ToString();
-                        btnSaveProfileInfo.Content = "Сохранить";
+                        btnSaveProfileInfo.Content = "Сохранить";                        
+                        foreach(Book book in userProfile.Books)
+                        {
+                            lbLibrary.Items.Add(book.Author+" "+book.Name);
+                        }
                     }
                 }
             }
@@ -266,6 +272,35 @@ namespace FirstWPF
                 book.Name = txtBookName.Text;
                 db.books.Add(book);
                 db.SaveChanges();
+            }
+            txtAuthor.Text="";
+            txtBookName.Text="";
+            UpdateBook();
+        }
+
+        private void UpdateBook()
+        {
+            using (db = new LibraryContext())
+            {
+                db.books.Load();
+                cmbBooks.ItemsSource = db.books.Local;
+                cmbBooks.SelectedValuePath = "Id";
+                cmbBooks.DisplayMemberPath = "Name";
+            }
+        }
+
+        private void BtnAddBookInLibrary_Click(object sender, RoutedEventArgs e)
+        {
+            if (userProfile!=null)
+            {
+                using (db = new LibraryContext())
+                {
+                    UserProfile profile = db.UserProfiles.Find(userProfile.Id);
+                    profile.Books.Add(db.books.Find(cmbBooks.SelectedValue));
+                    db.Entry(profile).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                    
             }
         }
     }

@@ -25,12 +25,12 @@
         <TextBlock x:Name="tbSmallInfo_Copy" HorizontalAlignment="Left" Margin="10,84,0,0" TextWrapping="Wrap" Text="Возраст" VerticalAlignment="Top"/>
         <TextBlock x:Name="tbSmallInfo_Copy1" HorizontalAlignment="Left" Margin="10,56,0,0" TextWrapping="Wrap" Text="Имя" VerticalAlignment="Top"/>
         <Button x:Name="btnDeleteProfileInfo" Content="Удалить" HorizontalAlignment="Left" Margin="153,121,0,0" VerticalAlignment="Top" Width="75" Click="BtnDeleteProfileInfo_Click"/>
-        <ListBox x:Name="lbLibrary" HorizontalAlignment="Left" Height="100" Margin="259,41,0,0" VerticalAlignment="Top" Width="102"/>
-        <ComboBox x:Name="cmbBooks" HorizontalAlignment="Left" Margin="142,206,0,0" VerticalAlignment="Top" Width="120"/>
+        <ListBox x:Name="lbLibrary" HorizontalAlignment="Left" Height="100" Margin="259,65,0,0" VerticalAlignment="Top" Width="102"/>
+        <ComboBox x:Name="cmbBooks"  HorizontalAlignment="Left" Margin="142,206,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="btnAddBook" Content="Добавить" HorizontalAlignment="Left" Margin="41,361,0,0" VerticalAlignment="Top" Width="75" Click="BtnAddBook_Click"/>
         <Button x:Name="btnDeleteBook" Content="Удалить" HorizontalAlignment="Left" Margin="153,361,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btnAddBookInLibrary" Content="Добавить" HorizontalAlignment="Left" Margin="41,206,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="btnDeleteBookInLibrary" Content="Удалить" HorizontalAlignment="Left" Margin="274,146,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnAddBookInLibrary" Content="Добавить" HorizontalAlignment="Left" Margin="41,206,0,0" VerticalAlignment="Top" Width="75" Click="BtnAddBookInLibrary_Click"/>
+        <Button x:Name="btnDeleteBookInLibrary" Content="Удалить" HorizontalAlignment="Left" Margin="274,170,0,0" VerticalAlignment="Top" Width="75"/>
         <TextBox x:Name="txtBookName" HorizontalAlignment="Left" Height="23" Margin="22,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="txtAuthor" HorizontalAlignment="Left" Height="23" Margin="153,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBlock x:Name="tbSmallInfo_Copy2" HorizontalAlignment="Left" Margin="153,299,0,0" TextWrapping="Wrap" Text="Автор" VerticalAlignment="Top"/>
